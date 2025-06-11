@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz do Amor 💘</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      text-align: center;
+      padding: 30px;
+      color: #333;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💕</text></svg>') repeat;
+      opacity: 0.1;
+      animation: float 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      14% { transform: scale(1.3); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.3); }
+      70% { transform: scale(1); }
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    
+    .dark-mode {
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      color: #ecf0f1;
+    }
+    
+    .dark-mode::before {
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🌙</text></svg>') repeat;
+    }
+    
+    h1 {
+      font-size: 2.5em;
+      font-weight: 700;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      animation: fadeInUp 1s ease-out;
+      position: relative;
+      z-index: 1;
+    }
+    
+    h2 {
+      font-size: 1.5em;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 30px;
+      animation: fadeInUp 1.2s ease-out;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .question-box {
+      margin: 30px auto;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      max-width: 600px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      transition: all 0.4s ease-in-out;
+      animation: fadeInUp 0.8s ease-out;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .question-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    }
+    
+    .dark-mode .question-box {
+      background: rgba(52, 73, 94, 0.95);
+      color: #ecf0f1;
+    }
+    
+    .question-box h2 {
+      color: #4a5568;
+      font-size: 1.4em;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    
+    .dark-mode .question-box h2 {
+      color: #ecf0f1;
+    }
+    
+    button {
+      display: block;
+      width: 100%;
+      margin: 15px 0;
+      padding: 15px 25px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      transform: translateY(0);
+    }
+    
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      animation: pulse 0.6s ease-in-out;
+    }
+    
+    button:hover::before {
+      left: 100%;
+    }
+    
+    button:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+    
+    .result {
+      font-size: 1.3em;
+      margin-top: 30px;
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      animation: fadeInUp 0.5s ease-out;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .photo-gallery {
+      margin-top: 40px;
+      animation: fadeInUp 1s ease-out;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .photo-gallery h2 {
+      color: white;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .photo-gallery img {
+      width: 150px;
+      height: 150px;
+      margin: 10px;
+      border-radius: 15px;
+      object-fit: cover;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+    
+    .photo-gallery img:hover {
+      transform: scale(1.1) rotate(2deg);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+      z-index: 10;
+      position: relative;
+    }
+    
+    .score {
+      font-size: 1.2em;
+      margin-top: 20px;
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 25px;
+      backdrop-filter: blur(10px);
+      display: inline-block;
+      animation: heartBeat 2s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .dark-mode .score {
+      color: #ecf0f1;
+    }
+    
+    .dark-toggle {
+      position: relative;
+      top: auto;
+      right: auto;
+      margin-left: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: none;
+      border-radius: 50px;
+      padding: 10px 15px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .header-container h1,
+    .header-container h2 {
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+    
+    .header-container div {
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+      }
+      .dark-toggle {
+        margin-left: 0;
+        margin-bottom: 15px;
+      }
+    }
+    
+    .dark-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+    
+    .final-message {
+      font-size: 1.2em;
+      margin-top: 30px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      line-height: 1.6;
+    }
+    
+    .audio-player {
+      margin-top: 20px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    .hearts-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .floating-heart {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 20px;
+      animation: heartFloat 6s linear infinite;
+    }
+    
+    @keyframes heartFloat {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkle 1.5s ease-in-out infinite;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+      position: relative;
+    }
+    
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+      
+      .question-box {
+        padding: 30px 20px;
+        margin: 20px 10px;
+      }
+      
+      button {
+        font-size: 0.9em;
+        padding: 12px 20px;
+      }
+      
+      .photo-gallery img {
+        width: 120px;
+        height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hearts-container" id="hearts-container"></div>
+  
+  <div class="header-container">
+    <button class="dark-toggle" onclick="toggleDarkMode()">🌙 Modo Escuro</button>
+    <div>
+      <h1>💘 Quiz do Amor: Skarlath, você me conhece mesmo? 💘</h1>
+      <h2>12 anos de Rawlyson & Skarlath — 15 de junho de 2025 💑</h2>
+    </div>
+  </div>
+
+  <div id="quiz-container" class="question-box">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+  
+  <div id="result" class="result"></div>
+  <div id="next-button" style="display:none;">
+    <button onclick="nextQuestion()">Próxima Pergunta ➡️</button>
+  </div>
+  <div class="score" id="score">Pontuação: 0 ❤️</div>
+
+  <div class="photo-gallery" id="gallery" style="display: none;">
+    <h2>Nossas Lembranças ❤️</h2>
+    <img src="https://i.ibb.co/4RYMFm18/IMG-9510.jpg" alt="Dando uma volta 1">
+    <img src="https://i.ibb.co/qM2CXGz4/IMG-9506.jpg" alt="Dando uma volta 2">
+    <img src="https://i.ibb.co/jksCtZKr/IMG-1902.jpg" alt="Viagem a Santo Amaro">
+    <img src="https://i.ibb.co/zTw4cWH1/57ad4f45-5f82-49ca-9cb3-115935b8c152.jpg" alt="Nossa primeira foto">
+  </div>
+
+  <audio id="correct-sound">
+    <source src="https://www.myinstants.com/media/sounds/tmp61fq4oi1.mp3" type="audio/mp3">
+  </audio>
+
+<audio id="love-song" class="audio-player" controls style="display:none;">
+  <source src="https://dl.sndup.net/5s258/Artic%20Monkeys%20-%20Suck%20it%20%26%20See.mp3" type="audio/mp3">
+  Seu navegador não suporta áudio.
+</audio>
+
+  <script>
+    const quizData = [
+      {
+        question: "🧠 Qual dessas opções é meu superpoder no relacionamento?",
+        answers: [
+          "Fazer drama profissionalmente",
+          "Dormir em qualquer lugar",
+          "Amar você mesmo quando você come minha batata",
+          "Reclamar do calor até no inverno"
+        ],
+        response: "Spoiler: é tudo isso aí mesmo! 😂"
+      },
+      {
+        question: "🍕 Se eu fosse uma comida, qual eu seria?",
+        answers: [
+          "Pizza (gostosa, mas difícil de dividir)",
+          "Sushi (frio mas chique)",
+          "Batata frita (você nunca enjoa)",
+          "Lasanha (cheio de camadas e calorias de amor)"
+        ],
+        response: "Hmm, agora fiquei com fome. Mas sim, sou a batata do seu coração! 🥔❤️"
+      },
+      {
+        question: "🐻 Qual desses é meu apelido secreto pra você?",
+        answers: [
+          "Mozãozito da Silva",
+          "Meu Ursinho",
+          "Rawlin dos Corações Unidos",
+          "Neném, bebê, docinho, coisinha"
+        ],
+        response: "Você acertou! (Mesmo que tenha errado, eu deixo passar dessa vez 😘)"
+      },
+      {
+        question: "💿 Qual seria nossa música tema?",
+        answers: [
+          "Dom Miguelo - Como yo le doy",
+          "I'm not the only one - Sam Smith😔😭😔😭",
+          "And I Love Her - The Beatles",
+          "Baby Shark/pão de queijo (Porque gruda na cabeça igual você no meu coração)"
+        ],
+        response: "Escolha difícil, mas qualquer uma dessas me lembra você (exceto talvez o Baby Shark 😂)"
+      },
+      {
+        question: "💘 Se a gente fosse um casal de desenho animado, qual seria?",
+        answers: [
+          "Mickey e Minnie",
+          "Shrek e Fiona",
+          "Tom e Jerry (mas com amor)",
+          "Scooby e Salsicha (fome e parceria)"
+        ],
+        response: "Se escolheu Shrek e Fiona, parabéns: somos fofos, fortes e apaixonados 💚. Se escolheu Scooby e Salsicha... acho que tá com fome! 🐶🥪"
+      },
+      {
+        question: "✨ O que mais me impressiona em você?",
+        answers: [
+          "Sua capacidade de me fazer rir até nos dias ruins",
+          "Como você consegue ser fofo(a) até dormindo",
+          "Seu talento para encontrar comida boa em qualquer lugar",
+          "Tudo isso e muito mais"
+        ],
+        response: "Confesso: você me impressiona mais que trailer de filme da Marvel! 😍🍿"
+      },
+      {
+        question: "😴 Qual foi meu recorde dormindo depois de almoçar com você?",
+        answers: [
+          "15 minutos",
+          "1 hora",
+          "3 dias (emocionalmente)",
+          "Ainda tô dormindo"
+        ],
+        response: "Você sabe que meu superpoder é hibernar depois da lasanha! 😴"
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    const quizContainer = document.getElementById("quiz-container");
+    const resultDiv = document.getElementById("result");
+    const gallery = document.getElementById("gallery");
+    const scoreDisplay = document.getElementById("score");
+    const sound = document.getElementById("correct-sound");
+    const nextButton = document.getElementById("next-button");
+    const loveSong = document.getElementById("love-song");
+    const progressFill = document.getElementById("progress-fill");
+    const heartsContainer = document.getElementById("hearts-container");
+
+    // Função para criar corações flutuantes
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'floating-heart';
+      heart.innerHTML = ['💖', '💕', '💗', '💝'][Math.floor(Math.random() * 4)];
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      heartsContainer.appendChild(heart);
+      
+      setTimeout(() => {
+        if (heart.parentNode) {
+          heart.remove();
+        }
+      }, 6000);
+    }
+
+    // Função para criar efeitos de brilho
+    function createSparkles(element) {
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          const sparkle = document.createElement('div');
+          sparkle.className = 'sparkle';
+          sparkle.style.left = Math.random() * element.offsetWidth + 'px';
+          sparkle.style.top = Math.random() * element.offsetHeight + 'px';
+          element.appendChild(sparkle);
+          
+          setTimeout(() => {
+            if (sparkle.parentNode) {
+              sparkle.remove();
+            }
+          }, 1500);
+        }, i * 100);
+      }
+    }
+
+    // Criar corações periodicamente
+    setInterval(createFloatingHeart, 2000);
+
+    function updateProgress() {
+      const progress = (current / quizData.length) * 100;
+      progressFill.style.width = progress + '%';
+    }
+
+    function showQuestion() {
+      const q = quizData[current];
+      updateProgress();
+      
+      const questionContent = `
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <h2>${q.question}</h2>
+        ${q.answers.map((ans) =>
+          `<button onclick="handleAnswer('${q.response.replace(/'/g, "\\'")}')" class="answer-btn">${ans}</button>`).join('')}
+      `;
+      
+      quizContainer.style.transform = "scale(1)";
+      quizContainer.innerHTML = questionContent;
+      
+      // Recriar referência da barra de progresso
+      const newProgressFill = document.getElementById("progress-fill");
+      if (newProgressFill) {
+        const progress = (current / quizData.length) * 100;
+        newProgressFill.style.width = progress + '%';
+      }
+    }
+
+    function handleAnswer(response) {
+      // Tocar som
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(e => console.log('Erro ao tocar som:', e));
+      }
+      
+      // Mostrar resposta
+      resultDiv.innerHTML = `<p>${response}</p>`;
+      resultDiv.style.display = 'block';
+      
+      // Atualizar pontuação
+      score++;
+      scoreDisplay.innerHTML = `Pontuação: ${score} ❤️`;
+      
+      // Animação da caixa de pergunta
+      quizContainer.style.transform = "scale(1.03)";
+      
+      // Criar efeitos visuais
+      createSparkles(quizContainer);
+      
+      // Criar corações extras
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => createFloatingHeart(), i * 100);
+      }
+      
+      // Mostrar botão próxima pergunta
+      nextButton.style.display = "block";
+      
+      // Desabilitar botões de resposta
+      const buttons = document.querySelectorAll('.answer-btn');
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        btn.style.cursor = 'not-allowed';
+      });
+    }
+
+    function nextQuestion() {
+      resultDiv.innerHTML = "";
+      resultDiv.style.display = 'none';
+      nextButton.style.display = "none";
+      current++;
+      
+      if (current < quizData.length) {
+        showQuestion();
+      } else {
+        showFinalMessage();
+      }
+    }
+
+    function showFinalMessage() {
+      // Atualizar progresso para 100%
+      const finalProgressFill = document.getElementById("progress-fill");
+      if (finalProgressFill) {
+        finalProgressFill.style.width = '100%';
+      }
+      
+      quizContainer.innerHTML = `
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 100%;"></div>
+        </div>
+        <h2>🎉 Você completou o Quiz do Amor!</h2>
+        <p>Mesmo errando tudo (ou acertando), você acertou meu coração! 💘</p>
+        <p>Pontuação final: ${score} / ${quizData.length} — ou seja, você é perfeita! 😍</p>
+        <div class="final-message">
+          <p>Skarlath, são 12 anos ao seu lado e eu continuo me surpreendendo com a pessoa maravilhosa que você é.</p>
+          <p>Mesmo nos dias difíceis, seu sorriso ilumina tudo. Você me conhece, me entende, me completa.</p>
+          <p>Esse quiz é só uma brincadeira, mas o amor que sinto por você é coisa séria. Obrigado por me escolher todos os dias. Eu te amo! 💖</p>
+        </div>
+      `;
+      
+      // Mostrar galeria
+      gallery.style.display = "block";
+      
+      // Tocar música
+      if (loveSong) {
+        loveSong.style.display = "block";
+        loveSong.play().catch(e => console.log('Erro ao tocar música:', e));
+      }
+
+      // Criar muitos corações para celebrar
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => createFloatingHeart(), i * 200);
+      }
+
+      // Adicionar imagem extra
+      setTimeout(() => {
+        const extra = document.createElement("div");
+        extra.innerHTML = `
+          <div style="margin-top: 30px; animation: fadeInUp 1s ease-out;">
+            <img src="https://i.ibb.co/zTw4cWH1/57ad4f45-5f82-49ca-9cb3-115935b8c152.jpg" alt="Nossa primeira foto" style="width: 200px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+            <p style="font-style: italic; color: white; margin-top: 10px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Lembra da nossa primeira foto? rs 😄</p>
+          </div>
+        `;
+        document.body.appendChild(extra);
+      }, 1000);
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+      const toggle = document.querySelector('.dark-toggle');
+      if (document.body.classList.contains('dark-mode')) {
+        toggle.innerHTML = '☀️ Modo Claro';
+      } else {
+        toggle.innerHTML = '🌙 Modo Escuro';
+      }
+    }
+
+    // Inicializar o quiz
+    showQuestion();
+  </script>
+
+</body>
+</html>
+
